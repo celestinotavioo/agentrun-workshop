@@ -9,8 +9,10 @@ Hands-on workshop that follows the talk *Kubernetes Operators for AI Agents* (De
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/celestinotavioo/agentrun-workshop?quickstart=1)
 
 1. Click the button above (you only need a GitHub account).
-2. Wait until the editor opens in your browser.
-3. In the terminal at the bottom, type:
+2. On the page that opens, click the green **Create new codespace** button.
+   Already did it before? You will see **Resume** instead: click it, so you keep your work.
+3. Wait until the editor opens in your browser.
+4. In the terminal at the bottom, type:
 
    ```bash
    make check
