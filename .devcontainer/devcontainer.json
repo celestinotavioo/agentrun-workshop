@@ -1,0 +1,20 @@
+{
+  "name": "AgentRun workshop",
+  "image": "mcr.microsoft.com/devcontainers/go:1.26",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": { "version": "latest", "helm": "none", "minikube": "none" },
+    "ghcr.io/devcontainers/features/sshd:1": {}
+  },
+  "hostRequirements": { "cpus": 2, "memory": "8gb" },
+  "remoteEnv": { "KUBE_CONTEXT": "kind-agentrun" },
+  "postCreateCommand": "bash hack/setup.sh",
+  "postStartCommand": "nohup bash hack/cluster-up.sh > /tmp/agentrun-cluster.log 2>&1 &",
+  "customizations": {
+    "vscode": {
+      "extensions": ["golang.go"],
+      "settings": { "terminal.integrated.defaultProfile.linux": "bash" }
+    },
+    "codespaces": { "openFiles": ["README.md"] }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "✅ Check my setup", "type": "shell", "command": "make check", "problemMatcher": [] },
+    { "label": "☸️ Start / repair the cluster", "type": "shell", "command": "make cluster", "problemMatcher": [] },
+    { "label": "🎬 Run the talk demo", "type": "shell", "command": "make demo", "problemMatcher": [] }
+  ]
+}

@@ -1,0 +1,10 @@
+bin/
+*.test
+*.out
+cover.html
+.DS_Store
+
+
+# IDEs
+.idea/
+
