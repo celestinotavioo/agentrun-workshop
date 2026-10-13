@@ -8,8 +8,8 @@
   },
   "hostRequirements": { "cpus": 2, "memory": "8gb" },
   "remoteEnv": { "KUBE_CONTEXT": "kind-agentrun" },
-  "postCreateCommand": "bash hack/setup.sh",
-  "postStartCommand": "setsid -f bash hack/cluster-up.sh > /tmp/agentrun-cluster.log 2>&1",
+  "onCreateCommand": "bash hack/setup.sh",
+  "postStartCommand": "bash hack/cluster-up.sh 2>&1 | tee /tmp/agentrun-cluster.log",
   "customizations": {
     "vscode": {
       "extensions": ["golang.go"],
