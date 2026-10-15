@@ -38,9 +38,10 @@ main() {
   # 1. cluster
   guard_context
   if ! "${KUBECTL[@]}" get --raw /readyz >/dev/null 2>&1; then
-    fail "the cluster '$KUBE_CONTEXT' is not answering"
-    bash hack/doctor.sh || true
-    exit 1
+    bash hack/cluster-up.sh > /tmp/agentrun-cluster.log 2>&1 &
+    if ! spin $! "starting the Kubernetes cluster (~2 min)"; then
+      fail "could not start the cluster — last lines:"; tail -15 /tmp/agentrun-cluster.log | sed 's/^/      /'; exit 1
+    fi
   fi
   version=$("${KUBECTL[@]}" version -o json 2>/dev/null | sed -n 's/.*"gitVersion": "\(v[^"]*\)".*/\1/p' | tail -1)
   ok "cluster   $KUBE_CONTEXT · Kubernetes $version"

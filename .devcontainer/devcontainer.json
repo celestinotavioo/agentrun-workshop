@@ -2,19 +2,44 @@
   "name": "AgentRun workshop",
   "image": "mcr.microsoft.com/devcontainers/go:1.26",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": { "moby": false },
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": { "version": "latest", "helm": "none", "minikube": "none" },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "latest",
+      "helm": "none",
+      "minikube": "none"
+    },
     "ghcr.io/devcontainers/features/sshd:1": {}
   },
-  "hostRequirements": { "cpus": 2, "memory": "8gb" },
-  "remoteEnv": { "KUBE_CONTEXT": "kind-agentrun" },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb"
+  },
+  "remoteEnv": {
+    "KUBE_CONTEXT": "kind-agentrun"
+  },
   "onCreateCommand": "bash hack/setup.sh",
-  "postStartCommand": "bash hack/cluster-up.sh 2>&1 | tee /tmp/agentrun-cluster.log",
   "customizations": {
     "vscode": {
-      "extensions": ["golang.go"],
-      "settings": { "terminal.integrated.defaultProfile.linux": "bash" }
+      "extensions": [
+        "golang.go"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "security.workspace.trust.enabled": false,
+        "chat.disableAIFeatures": true,
+        "workbench.secondarySideBar.defaultVisibility": "hidden",
+        "workbench.editorAssociations": {
+          "*.md": "vscode.markdown.preview.editor"
+        },
+        "workbench.startupEditor": "none"
+      }
     },
-    "codespaces": { "openFiles": ["README.md"] }
+    "codespaces": {
+      "openFiles": [
+        "README.md"
+      ]
+    }
   }
 }

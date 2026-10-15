@@ -19,7 +19,10 @@ if command -v kind >/dev/null && command -v kubectl >/dev/null; then ok "kind $(
 if kubectl --context "$CTX" get --raw /readyz >/dev/null 2>&1; then
   ok "Kubernetes cluster '$NAME' is ready ($CTX)"
 elif pgrep -f "kind create cluster|cluster-up.sh" >/dev/null; then
-  wait_ "Kubernetes cluster '$NAME' is starting (~1-2 min) — only needed in block 5"
+  wait_ "Kubernetes cluster '$NAME' is starting in the background (~2 min) — only needed in block 5"
+elif docker info >/dev/null 2>&1 && command -v kind >/dev/null; then
+  setsid -f bash hack/cluster-up.sh > /tmp/agentrun-cluster.log 2>&1 < /dev/null
+  wait_ "Kubernetes cluster '$NAME' — started it for you in the background (~2 min) — only needed in block 5"
 else
   todo "Kubernetes cluster '$NAME' is not running" "run: make cluster"
 fi
