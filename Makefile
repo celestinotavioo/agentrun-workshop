@@ -5,7 +5,7 @@ KIND_CLUSTER     ?= agentrun
 KUBE_CONTEXT     ?= kind-$(KIND_CLUSTER)
 NS               ?= agents-demo
 # Tags derive from the source hash: a code change always reaches the cluster (no stale ":dev" cache).
-SRC_HASH         := $(shell find api cmd internal go.mod go.sum Dockerfile -type f 2>/dev/null | LC_ALL=C sort | xargs cat | shasum | cut -c1-10)
+SRC_HASH         := $(shell find api cmd internal go.mod go.sum Dockerfile hack/Dockerfile.bin -type f 2>/dev/null | LC_ALL=C sort | xargs cat | shasum | cut -c1-10)
 TAG              ?= dev-$(SRC_HASH)
 CONTROLLER_IMAGE ?= agentrun-controller:$(TAG)
 AGENT_IMAGE      ?= agentrun-agent:$(TAG)
@@ -71,10 +71,17 @@ install: guard manifests
 	@$(KUBECTL) wait --for=condition=Established crd/agentruns.agents.devfest.dev --timeout=30s >/dev/null
 
 .PHONY: images
-images:
-	@docker build -q --build-arg BIN=manager -t $(CONTROLLER_IMAGE) . >/dev/null
-	@docker build -q --build-arg BIN=agent -t $(AGENT_IMAGE) . >/dev/null
+images: linux-binaries
+	@docker build -q -f hack/Dockerfile.bin --build-arg BIN=manager -t $(CONTROLLER_IMAGE) bin/linux >/dev/null
+	@docker build -q -f hack/Dockerfile.bin --build-arg BIN=agent -t $(AGENT_IMAGE) bin/linux >/dev/null
 	@if [[ "$(KUBE_CONTEXT)" == kind-* ]]; then kind load docker-image $(CONTROLLER_IMAGE) $(AGENT_IMAGE) --name $(KIND_CLUSTER) >/dev/null; fi
+
+# Compiled on the host, not inside docker build, so the Go build cache makes rebuilds take seconds.
+.PHONY: linux-binaries
+linux-binaries:
+	@mkdir -p bin/linux
+	@CGO_ENABLED=0 GOOS=linux GOARCH=$$(go env GOARCH) go build -trimpath -ldflags="-s -w" -o bin/linux/manager ./cmd/manager
+	@CGO_ENABLED=0 GOOS=linux GOARCH=$$(go env GOARCH) go build -trimpath -ldflags="-s -w" -o bin/linux/agent ./cmd/agent
 
 .PHONY: agentctl
 agentctl:

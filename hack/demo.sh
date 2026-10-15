@@ -56,7 +56,7 @@ main() {
       ok "operator  up to date ($TAG)"
     else
       make --no-print-directory -s deploy >"$LOG" 2>&1 &
-      if spin $! "building + deploying the operator (~1 min)"; then
+      if spin $! "building + deploying the operator (~30 s)"; then
         ok "operator  deployed ($TAG)"
       else
         fail "deploy failed — last lines:"; tail -15 "$LOG" | sed 's/^/      /'; exit 1

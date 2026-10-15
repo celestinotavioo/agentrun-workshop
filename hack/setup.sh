@@ -10,7 +10,8 @@ go mod download
 echo "▸ kind $KIND_VERSION"
 command -v kind >/dev/null || go install "sigs.k8s.io/kind@$KIND_VERSION"
 
-echo "▸ workshop binaries"
-make --no-print-directory agentctl
+echo "▸ workshop binaries (also warms the Go build cache, so later image builds take seconds)"
+make --no-print-directory agentctl linux-binaries
+docker pull -q gcr.io/distroless/static:nonroot >/dev/null 2>&1 || true
 
 echo "✔ setup done — run: make check"

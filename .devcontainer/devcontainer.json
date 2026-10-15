@@ -13,8 +13,8 @@
     "ghcr.io/devcontainers/features/sshd:1": {}
   },
   "hostRequirements": {
-    "cpus": 2,
-    "memory": "8gb"
+    "cpus": 4,
+    "memory": "16gb"
   },
   "remoteEnv": {
     "KUBE_CONTEXT": "kind-agentrun"
@@ -27,19 +27,20 @@
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-        "security.workspace.trust.enabled": false,
         "chat.disableAIFeatures": true,
         "workbench.secondarySideBar.defaultVisibility": "hidden",
         "workbench.editorAssociations": {
           "*.md": "vscode.markdown.preview.editor"
         },
-        "workbench.startupEditor": "none"
+        "workbench.startupEditor": "readme",
+        "remote.autoForwardPorts": false,
+        "task.autoDetect": "off",
+        "npm.autoDetect": "off",
+        "grunt.autoDetect": "off",
+        "gulp.autoDetect": "off",
+        "jake.autoDetect": "off",
+        "typescript.tsc.autoDetect": "off"
       }
-    },
-    "codespaces": {
-      "openFiles": [
-        "README.md"
-      ]
     }
   }
 }

@@ -1,0 +1,6 @@
+# Packages a binary already compiled on the host (fast: the Go build cache lives in the codespace).
+FROM gcr.io/distroless/static:nonroot
+ARG BIN
+COPY ${BIN} /app
+USER 65532:65532
+ENTRYPOINT ["/app"]
