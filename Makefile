@@ -102,6 +102,9 @@ manifests: $(CONTROLLER_GEN)
 	@$(CONTROLLER_GEN) crd:allowDangerousTypes=true rbac:roleName=agentrun-manager-role paths=./... \
 		output:crd:artifacts:config=config/crd/bases output:rbac:artifacts:config=config/rbac
 
+.PHONY: tools
+tools: $(CONTROLLER_GEN)
+
 $(CONTROLLER_GEN):
 	@GOBIN=$(BIN) go install sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_GEN_VERSION)
 
